@@ -1,0 +1,42 @@
+{
+  "objectscript.conn": {
+    "active": true,
+    "label": "LOCALBOOKMARKS",
+    "host": "127.0.0.1",
+    "port": 5273,
+    "username": "_SYSTEM",
+    "ns": "USER",
+    "https": false, 
+  },
+  "objectscript.export.folder": "services/cls",
+  "objectscript.export.filter": "ICO.%",
+  "objectscript.conn.active": true,
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#1e593f",
+    "activityBar.activeBorder": "#221030",
+    "activityBar.background": "#1e593f",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#221030",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#113324",
+    "statusBar.border": "#113324",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#1e593f",
+    "titleBar.activeBackground": "#113324",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.border": "#113324",
+    "titleBar.inactiveBackground": "#11332499",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#113324",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "driver": "SQLite",
+      "name": "sqlitesandbox",
+      "database": "sqlitesandbox.sqlite"
+    }
+  ],
+  "sqltools.useNodeRuntime": true,
+}
