@@ -2,7 +2,7 @@ import json
 import pyodbc
 from datetime import date
 
-fieldnames = ["vendor_id", "vendor_product_code", "quantity_kg", "date_departure"]
+KEYFIELDNAMES = ["vendor_id", "vendor_product_code", "quantity_kg"]
 
 def load_manifest(json_data: dict, conn: pyodbc.Connection) -> Exception:
     """ Use SQL to load records into the data structure
@@ -13,7 +13,7 @@ def load_manifest(json_data: dict, conn: pyodbc.Connection) -> Exception:
         true if creation is successful, otherwise returns the exception
     """
     cursor = conn.cursor()
-    fieldnamesql = "INSERT INTO ICO.inventory (vendor_id, vendor_product_code, quantity_kg, date_arrival, date_departure)"
+    fieldnamesql = "INSERT INTO ICO.inventory (vendor_id, vendor_product_code, quantity_kg, date_arrival)"
     today = date.today()
     mydate = today.strftime("%Y-%m-%d")
     try:
@@ -23,7 +23,7 @@ def load_manifest(json_data: dict, conn: pyodbc.Connection) -> Exception:
             valsql += "'" + item.get("vendor_id") + "', "
             valsql += "'" + item.get("vendor_product_code") + "', "
             valsql += str(item.get("quantity_kg")) + ", "
-            valsql += "'" + mydate + "', "
+            valsql += "'" + mydate + "')"
             print("Inserting: "+valsql)
             cursor.execute(valsql)
 
@@ -47,9 +47,9 @@ def validate_manifest(json_data: dict) -> tuple:
         for item in items:
             num_good_keys = 0
             for key in item:
-                if (key in fieldnames):
+                if (key in KEYFIELDNAMES):
                     num_good_keys += 1
-            if num_good_keys < 4:
+            if num_good_keys < len(KEYFIELDNAMES):
                 raise Exception("Bad data in items.")
         return json_data, True, None
     except Exception as exp:

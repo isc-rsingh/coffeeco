@@ -3,32 +3,27 @@
         {
             "vendor_id": "ETRADER",
             "vendor_product_code": "ETHIOPA32",
-            "quantity_kg": 200,
-            "date_departure": "2020-05-01"
+            "quantity_kg": 200
         },
         {
             "vendor_id": "BRZ221",
             "vendor_product_code": "BRAZILPREM",
-            "quantity_kg": 100,
-            "date_departure": "2020-05-04"
+            "quantity_kg": 100
         },
         {
             "vendor_id": "GMLPROD",
             "vendor_product_code": "GUATEMALAALT30",
-            "quantity_kg": 100,
-            "date_departure": "2020-05-02"
+            "quantity_kg": 100
         },
         {
             "vendor_id": "DKE",
             "vendor_product_code": "SUMATRA2",
-            "quantity_kg": 100,
-            "date_departure": "2020-05-02"
+            "quantity_kg": 100
         },
         {
             "vendor_id": "DKE",
             "vendor_product_code": "SUMATRA3",
-            "quantity_kg": 200,
-            "date_departure": "2020-05-02"
+            "quantity_kg": 200
         }
     ]
 }
