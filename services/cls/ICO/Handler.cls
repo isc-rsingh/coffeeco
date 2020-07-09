@@ -18,7 +18,7 @@ ClassMethod GetJSONFromRequest(Output obj As %DynamicObject) As %Boolean
 }
 
 /// Query the inventory using a particular inventory ID for raw beans that can be roasted
-ClassMethod GetRawBean(id As %String) As %Status
+ClassMethod ListRawBean(id As %String) As %Status
 {
     try {
         if (1 '= ##class(ICO.inventory).%ExistsId(id))
@@ -42,7 +42,7 @@ ClassMethod GetRawBean(id As %String) As %Status
 }
 
 /// Query the inventory for all raw beans in inventory that can be roasted
-ClassMethod GetRawBeans() As %Status
+ClassMethod ListRawBeans() As %Status
 {
     try {
         set sqlquery = "SELECT ID, vendor_product_code, date_arrival, SUM(quantity_kg) AS quantity_kg FROM ICO.inventory GROUP BY vendor_product_code ORDER BY date_arrival"
@@ -75,7 +75,7 @@ ClassMethod GetRawBeans() As %Status
 /// Take a specific item and amount out of inventory for roasting
 /// <br><b>id: </b>inventory ID
 /// <br><b>quantity: </b>amount in kilograms
-ClassMethod PickRawBeans(id As %String, quantity As %Numeric) As %Status
+ClassMethod GetRawBeans(id As %String, quantity As %Numeric) As %Status
 {
     try {
         if (1 '= ##class(ICO.inventory).%ExistsId(id))
@@ -229,9 +229,9 @@ ClassMethod SellProduct(id As %String, quantity As %Numeric) As %Status
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
 <Routes>
-        <Route Url="/inventory/getbeans" Method="GET" Call="GetRawBeans" />
-        <Route Url="/inventory/getbeans/:id" Method="GET" Call="GetRawBean" />
-        <Route Url="/inventory/pickbeans/:id/:quantity" Method="POST" Call="PickRawBeans" />
+        <Route Url="/inventory/listbeans" Method="GET" Call="ListRawBeans" />
+        <Route Url="/inventory/listbeans/:id" Method="GET" Call="ListRawBean" />
+        <Route Url="/inventory/getbeans/:id/:quantity" Method="POST" Call="GetRawBeans" />
         <Route Url="/catalog/catalogproduct" Method="POST" Call="CatalogProduct" />
         <Route Url="/catalog/getproducts" Method="GET" Call="GetProducts" />
         <Route Url="/catalog/getproducts/:fresh" Method="GET" Call="GetProducts" />
