@@ -17,32 +17,8 @@ ClassMethod GetJSONFromRequest(Output obj As %DynamicObject) As %Boolean
     Quit ok
 }
 
-/// Query the inventory using a particular inventory ID for raw beans that can be roasted
-ClassMethod GetRawBean(id As %String) As %Status
-{
-    try {
-        if (1 '= ##class(ICO.inventory).%ExistsId(id))
-        {
-            set err = {}
-            set err."error" = "ID "_id_" does NOT exist!"
-            write err.%ToJSON()
-        }
-        else 
-        {
-            set item = ##class(ICO.inventory).%OpenId(id)
-            do item.%JSONExportToString(.outstring)
-            write outstring
-        }
-    } catch (oException) {
-        set expobj = {}
-        set expobj."exception" = oException.%AsSystemError()
-        write expobj.%ToJSON()
-    }
-    Quit $$$OK
-}
-
 /// Query the inventory for all raw beans in inventory that can be roasted
-ClassMethod GetRawBeans() As %Status
+ClassMethod ListRawBeans() As %Status
 {
     try {
         set sqlquery = "SELECT ID, vendor_product_code, date_arrival, SUM(quantity_kg) AS quantity_kg FROM ICO.inventory GROUP BY vendor_product_code ORDER BY date_arrival"
@@ -75,13 +51,14 @@ ClassMethod GetRawBeans() As %Status
 /// Take a specific item and amount out of inventory for roasting
 /// <br><b>id: </b>inventory ID
 /// <br><b>quantity: </b>amount in kilograms
-ClassMethod PickRawBeans(id As %String, quantity As %Numeric) As %Status
+ClassMethod GetRawBeans(id As %String, quantity As %Numeric) As %Status
 {
     try {
         if (1 '= ##class(ICO.inventory).%ExistsId(id))
         {
             set err = {}
             set err."error" = "ID "_id_" does NOT exist!"
+            set %response.Status = ..#HTTP409CONFLICT
             write err.%ToJSON()
         }
         else 
@@ -90,7 +67,8 @@ ClassMethod PickRawBeans(id As %String, quantity As %Numeric) As %Status
             if (quantity > item.quantitykg)
             {
                 set err = {}
-                set err."error" = "You tried to get "_quantity_", but we only have "_item.quantitykg_" kilograms available."
+                set err."error" = "You tried to get "_quantity_" kilograms, but we only have "_item.quantitykg_" kilograms available."
+                set %response.Status = ..#HTTP409CONFLICT
                 write err.%ToJSON()
             }
             else 
@@ -104,6 +82,7 @@ ClassMethod PickRawBeans(id As %String, quantity As %Numeric) As %Status
     } catch (oException) {
         set expobj = {}
         set expobj."exception" = oException.%AsSystemError()
+        set %response.Status = ..#HTTP400BADREQUEST
         write expobj.%ToJSON()
     }
     Quit $$$OK
@@ -143,13 +122,16 @@ ClassMethod CatalogProduct() As %Status
     } catch (oException) {
         set expobj = {}
         set expobj."exception" = oException.%AsSystemError()
+        set %response.Status = ..#HTTP400BADREQUEST
         write expobj.%ToJSON()
     }
     Quit $$$OK
 }
 
+Parameter MAXAGE = 5;
+
 /// Get products and be able to filter by ID and type (product code)
-/// <br><b>maxdaysold: </b>only return products roasted no later than this number of days ago
+/// <br><b>fresh: </b>only return products roasted no later than MAXAGE days ago
 ClassMethod GetProducts(fresh As %Boolean = 1) As %Status
 {
     try {
@@ -159,7 +141,7 @@ ClassMethod GetProducts(fresh As %Boolean = 1) As %Status
         } else {
             set sqlquery = sqlquery_" WHERE time_roasted <= DATEADD('day',-?,CURRENT_DATE)"
         }
-        set rs = ##class(%SQL.Statement).%ExecDirect(,sqlquery, 5)
+        set rs = ##class(%SQL.Statement).%ExecDirect(,sqlquery, MAXAGE)
         #; write sqlquery
         set itemsarray = []
 
@@ -191,7 +173,7 @@ ClassMethod GetProducts(fresh As %Boolean = 1) As %Status
 
 /// Decrement the catalog’s stock after a sale
 /// <br><b>id: </b>catalog ID
-/// <br><b>quantity: </b>amount in kilograms
+/// <br><b>quantity: </b>anumber of coffee bags
 ClassMethod SellProduct(id As %String, quantity As %Numeric) As %Status
 {
     try {
@@ -229,9 +211,8 @@ ClassMethod SellProduct(id As %String, quantity As %Numeric) As %Status
 XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
 <Routes>
-        <Route Url="/inventory/getbeans" Method="GET" Call="GetRawBeans" />
-        <Route Url="/inventory/getbeans/:id" Method="GET" Call="GetRawBean" />
-        <Route Url="/inventory/pickbeans/:id/:quantity" Method="POST" Call="PickRawBeans" />
+        <Route Url="/inventory/listbeans" Method="GET" Call="ListRawBeans" />
+        <Route Url="/inventory/getbeans/:id/:quantity" Method="POST" Call="GetRawBeans" />
         <Route Url="/catalog/catalogproduct" Method="POST" Call="CatalogProduct" />
         <Route Url="/catalog/getproducts" Method="GET" Call="GetProducts" />
         <Route Url="/catalog/getproducts/:fresh" Method="GET" Call="GetProducts" />
