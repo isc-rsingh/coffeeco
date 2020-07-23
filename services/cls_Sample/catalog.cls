@@ -46,7 +46,6 @@ Storage Default
 <DataLocation>^DSrZ.UqpX.1</DataLocation>
 <DefaultData>catalogDefaultData</DefaultData>
 <ExtentLocation>^DSrZ.UqpX</ExtentLocation>
-<IdFunction>sequence</IdFunction>
 <IdLocation>^DSrZ.UqpX.1</IdLocation>
 <Index name="DDLBEIndex">
 <Location>^DSrZ.UqpX.2</Location>
