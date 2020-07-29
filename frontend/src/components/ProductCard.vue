@@ -5,20 +5,46 @@
       <div class="title">{{product.product_code}}</div>
       <div class="notes">{{product.roasting_notes}}</div>
       <div class="roasted">Roasted on: {{product.time_roasted | moment}}</div>
-      <div class="price">Price per bag: <span class="pricenum">{{product.price}}</span></div>
+      <div class="price-order">
+        <div class="order">
+          <form @submit.prevent="processOrder">
+          <input type="number" name="q" min=1 :max=product.quantity v-model=orderquantity>
+          <button type="submit">Place Order</button>
+          </form>
+        </div>
+        <div class="price">Price per bag: <span class="pricenum">{{product.price}}</span></div>
+      </div>
     </div>
   </li>
 </template>
 
 <script>
+import axios from 'axios';
 import moment from 'moment';
 
 export default {
   name: 'ProductCard',
   props: ['product'],
+  data() {
+    return {
+      orderquantity: 1,
+      price: this.product.price,
+      catalog_id: this.product.catalog_id,
+    };
+  },
   filters: {
     moment(date) {
       return moment(date).format('MMMM Do');
+    },
+  },
+  methods: {
+    processOrder() {
+      // console.log({ catalog_id: this.catalog_id, quant: this.orderquantity, price: this.price });
+      const orderurl = `http://localhost:5273/api/coffeeco/catalog/sellproduct/${this.catalog_id}/${this.orderquantity}`;
+      return axios({
+        method: 'post',
+        url: orderurl,
+      });
     },
   },
 };
@@ -55,5 +81,11 @@ div.product-details > .price {
   font-weight: 500;
   position: absolute;
   bottom: 0;
+}
+.price-order {
+  display: inline;
+}
+.order {
+  float: right;
 }
 </style>
