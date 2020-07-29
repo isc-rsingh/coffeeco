@@ -39,12 +39,16 @@ export default {
   },
   methods: {
     processOrder() {
+      const nm = this.product.product_code;
+      const ci = this.product.catalog_id;
+      const oq = this.orderquantity;
       // console.log({ catalog_id: this.catalog_id, quant: this.orderquantity, price: this.price });
-      const orderurl = `http://localhost:5273/api/coffeeco/catalog/sellproduct/${this.catalog_id}/${this.orderquantity}`;
-      return axios({
-        method: 'post',
-        url: orderurl,
-      });
+      const orderurl = `http://localhost:5273/api/coffeeco/catalog/sellproduct/${ci}/${oq}`;
+      axios
+        .post(orderurl)
+        .then(
+          (response) => alert(`Ordered ${oq} bags of ${nm}!\n${response.data.quantity} still in stock.`),
+        );
     },
   },
 };
