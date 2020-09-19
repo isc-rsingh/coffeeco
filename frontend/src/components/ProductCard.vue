@@ -43,7 +43,7 @@ export default {
       const ci = this.product.catalog_id;
       const oq = this.orderquantity;
       // console.log({ catalog_id: this.catalog_id, quant: this.orderquantity, price: this.price });
-      const orderurl = `http://localhost:5273/api/coffeeco/catalog/sellproduct/${ci}/${oq}`;
+      const orderurl = `http://localhost:52773/api/coffeeco/catalog/sellproduct/${ci}/${oq}`;
       axios
         .post(orderurl)
         .then(
@@ -63,7 +63,9 @@ ul {
 li.product-card {
   display: flex;
   margin: 24px 0;
-  width: 600px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 li.product-card > img {
   width: 156px;
