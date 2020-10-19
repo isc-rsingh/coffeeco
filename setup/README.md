@@ -40,15 +40,15 @@ Example file:
 ## REST interface for working with the data
 
 Get a list of inventory items
-GET http://localhost:5273/api/coffeeco/inventory/items
+GET http://localhost:52773/api/coffeeco/inventory/items
 
 Add JSON capabilities to the tables (persistent classes)
 extend JSON.Adaptor
 add %JSONFIELDNAMEs to the properties
 
 Get a single item by ID
-GET http://localhost:5273/api/coffeeco/inventory/item/1
+GET http://localhost:52773/api/coffeeco/inventory/item/1
 
 then when we write the POST REST API to get a single item, it's soooo easy. Just use %OpenId
-POST http://localhost:5273/api/coffeeco/inventory/pick/1/2.4
+POST http://localhost:52773/api/coffeeco/inventory/pick/1/2.4
 

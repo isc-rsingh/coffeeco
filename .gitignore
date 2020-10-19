@@ -1,3 +1,7 @@
+connection.config
+services/cls/
+.DS_Store
+
 # Logs
 logs
 *.log
@@ -102,3 +106,4 @@ dist
 
 # TernJS port file
 .tern-port
+setup/connection.config
