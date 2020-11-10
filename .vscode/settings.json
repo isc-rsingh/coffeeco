@@ -1,9 +1,4 @@
 {
-  "objectscript.conn": {
-    "active": true,
-    "ns": "USER",
-    "server": "dockeriris"
-  },
   "objectscript.export.folder": "services/cls",
   "objectscript.export.filter": "ICO.%",
   "workbench.colorCustomizations": {
