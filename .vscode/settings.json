@@ -1,37 +1,4 @@
 {
   "objectscript.export.folder": "services/cls",
   "objectscript.export.filter": "ICO.%",
-  "workbench.colorCustomizations": {
-    "activityBar.activeBackground": "#d0b18b",
-    "activityBar.activeBorder": "#378864",
-    "activityBar.background": "#d0b18b",
-    "activityBar.foreground": "#15202b",
-    "activityBar.inactiveForeground": "#15202b99",
-    "activityBarBadge.background": "#378864",
-    "activityBarBadge.foreground": "#e7e7e7",
-    "statusBar.background": "#c19967",
-    "statusBar.foreground": "#15202b",
-    "statusBarItem.hoverBackground": "#ae8047",
-    "titleBar.activeBackground": "#c19967",
-    "titleBar.activeForeground": "#15202b",
-    "titleBar.inactiveBackground": "#c1996799",
-    "titleBar.inactiveForeground": "#15202b99"
-  },
-  "peacock.color": "#C19967",
-  "sqltools.connections": [
-    {
-      "namespace": "USER",
-      "connectionMethod": "Server and Port",
-      "showSystem": false,
-      "previewLimit": 50,
-      "server": "localhost",
-      "port": 52773,
-      "askForPassword": false,
-      "driver": "InterSystems IRIS",
-      "name": "IRIS docker",
-      "username": "_SYSTEM",
-      "password": "genjisan"
-    }
-  ],
-  "sqltools.useNodeRuntime": true,
 }
