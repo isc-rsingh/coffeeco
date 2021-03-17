@@ -47,7 +47,13 @@ export default {
       axios
         .post(orderurl)
         .then(
-          (response) => alert(`Ordered ${oq} bags of ${nm}!\n${response.data.quantity} still in stock.`),
+          (response) => {
+            if (response.data.error) {
+              alert(`${response.data.error}.`);
+            } else {
+              alert(`Ordered ${oq} bags of ${nm}!\n${response.data.quantity} still in stock.`);
+            }
+          },
         );
     },
   },
