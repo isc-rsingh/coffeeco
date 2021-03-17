@@ -50,6 +50,7 @@ ClassMethod GetProducts(fresh As %Boolean = 1) As %Status
         } else {
             set sqlquery = sqlquery_" WHERE time_roasted <= DATEADD('day',-?,CURRENT_DATE)"
         }
+        set sqlquery = sqlquery_" AND quantity > 0"
         set rs = ##class(%SQL.Statement).%ExecDirect(,sqlquery, ..#MAXAGE)
         set itemsarray = []
 
