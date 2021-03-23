@@ -1,15 +1,15 @@
-/// in step 2 add json.adaptor and jsonfieldname properties
+/// Database representation of raw coffee bean inventory
 Class ICO.inventory Extends (%Persistent, %JSON.Adaptor) [ ClassType = persistent, DdlAllowed, Final, Owner = {_SYSTEM}, ProcedureBlock, SqlRowIdPrivate, SqlTableName = inventory ]
 {
-
+/// Vendor's unique ID
 Property vendorid As %Library.String(%JSONFIELDNAME = "vendor_id", MAXLEN = 128) [ SqlColumnNumber = 2, SqlFieldName = vendor_id ];
-
+/// Vendor's product code
 Property vendorproductcode As %Library.String(%JSONFIELDNAME = "vendor_product_code", MAXLEN = 128) [ SqlColumnNumber = 3, SqlFieldName = vendor_product_code ];
-
+/// Quantity of beans in kilograms
 Property quantitykg As %Library.Numeric(%JSONFIELDNAME = "quantity_kg", MAXVAL = 99999999.99, MINVAL = -99999999.99, SCALE = 2) [ SqlColumnNumber = 4, SqlFieldName = quantity_kg ];
-
+/// Date the product arrived at the warehouse
 Property datearrival As %Library.Date(%JSONFIELDNAME = "date_arrival") [ SqlColumnNumber = 5, SqlFieldName = date_arrival ];
-
+/// Date the product left the producer
 Property datedeparture As %Library.Date(%JSONFIELDNAME = "date_departure") [ SqlColumnNumber = 6, SqlFieldName = date_departure ];
 
 Parameter USEEXTENTSET = 1;

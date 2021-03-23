@@ -1,15 +1,20 @@
+/// REST services for managing the coffee business
 Class ICO.Handler Extends %CSP.REST
 {
-
+/// Honor the CORS header <a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GREST_CORS">as described here</a>
 Parameter HandleCorsRequest = 1;
-
+/// Default response content type
 Parameter CONTENTTYPE = "application/json";
-
+/// Number of days since roasting for the coffee to be considered "stale"
 Parameter MAXAGE = 5;
 
+/// Removes bags of coffee from the catalog
+/// Input: <ul><li>id: catalog ID in catalog</li><li>quantity: number of bags to remove</li></ul>
+/// Output: New product quantity on-hand, or an error
 ClassMethod SellProduct(id As %String, quantity As %Numeric) As %Status
 {
     try {
+        // does the ID exist?
         if (1 '= ##class(ICO.catalog).%ExistsId(id))
         {
             set err = {}
@@ -18,6 +23,7 @@ ClassMethod SellProduct(id As %String, quantity As %Numeric) As %Status
         }
         else 
         {
+            // do we have enough quantity?
             set item = ##class(ICO.catalog).%OpenId(id)
             if (quantity > item.quantity)
             {
@@ -27,6 +33,7 @@ ClassMethod SellProduct(id As %String, quantity As %Numeric) As %Status
             }
             else 
             {
+                // decrement the database and return the new quantity
                 set item.quantity = (item.quantity - quantity)
                 do item.%JSONExportToString(.outstring)
                 write outstring
@@ -34,6 +41,7 @@ ClassMethod SellProduct(id As %String, quantity As %Numeric) As %Status
             }
         }
     } catch (oException) {
+        // return the error
         set expobj = {}
         set expobj."exception" = oException.%AsSystemError()
         write expobj.%ToJSON()
@@ -41,19 +49,27 @@ ClassMethod SellProduct(id As %String, quantity As %Numeric) As %Status
     Quit $$$OK
 }
 
+/// Gets  bagged coffee inventory for sale from the catalog
+/// Input: fresh: if <pre>1</pre>, return stale bags (roasted more than <PARAMETER>MAXAGE</PARAMETER> days ago).
+/// Output: JSON listing of products
 ClassMethod GetProducts(fresh As %Boolean = 1) As %Status
 {
     try {
+        // fields to return
         set sqlquery = "SELECT catalog_id, product_code, quantity, price, time_roasted, roasting_notes, img FROM ICO.catalog"
+        // set the WHERE clause based on whether we want fresh or not (the -? will be replaced by MAXAGE)
         if fresh = 1 {
             set sqlquery = sqlquery_" WHERE time_roasted > DATEADD('day',-?,CURRENT_DATE)"
         } else {
             set sqlquery = sqlquery_" WHERE time_roasted <= DATEADD('day',-?,CURRENT_DATE)"
         }
+        // if nothing is left, exclude from the response
         set sqlquery = sqlquery_" AND quantity > 0"
+        // run the query
         set rs = ##class(%SQL.Statement).%ExecDirect(,sqlquery, ..#MAXAGE)
         set itemsarray = []
 
+        // iterate over the results and build a dynamic array
         while rs.%Next()
         {
             do itemsarray.%Push(
@@ -68,6 +84,7 @@ ClassMethod GetProducts(fresh As %Boolean = 1) As %Status
                 }
             )
         }
+        // translate the dynamic arry into JSON and return to client
         set itemsobj = {}
         set itemsobj."rowcount" = rs.%ROWCOUNT
         set itemsobj."products" = itemsarray
@@ -80,6 +97,7 @@ ClassMethod GetProducts(fresh As %Boolean = 1) As %Status
     Quit $$$OK
 }
 
+/// Create JSON from POST content
 ClassMethod GetJSONFromRequest(Output obj As %DynamicObject) As %Boolean
 {
     set ok = 1
@@ -91,8 +109,12 @@ ClassMethod GetJSONFromRequest(Output obj As %DynamicObject) As %Boolean
     Quit ok
 }
 
+/// Accepts JSON in an HTTP POST and persists it into the bagged coffee catalog
+/// Input: None explicit. Will get HTTP POST content when calling <METHOD>GetJSONFromRequest</METHOD>
+/// Output: on success, JSON having a key/value of "success": 1, and the object saved, or an error.
 ClassMethod CatalogProduct() As %Status
 {
+    // get HTTP POST content
     if '..GetJSONFromRequest(.obj) {
         set %response.Status = ..#HTTP400BADREQUEST
         set error = {"error": "No JSON body in request"}
@@ -100,6 +122,7 @@ ClassMethod CatalogProduct() As %Status
         Quit $$$OK
     }
 
+    /// construct a new ICO.catalog object and populate it from the input
     try {
         set catobj = ##class(ICO.catalog).%New()
         set catobj.productcode = obj."product_code"
@@ -121,9 +144,13 @@ ClassMethod CatalogProduct() As %Status
     Quit $$$OK
 }
 
+/// Takes raw coffee beans out of inventory so they can be virtually roasted
+/// Input: <ul><li>id: vendor id in catalog</li><li>quantity: amount in kilograms</li></ul>
+/// Output: on success, JSON of the item and quantity withdrawn, or an error.
 ClassMethod GetRawBeans(id As %String, quantity As %Numeric) As %Status
 {
     try {
+        // does the vendor ID exist?
         if (1 '= ##class(ICO.inventory).%ExistsId(id))
         {
             set err = {}
@@ -132,6 +159,7 @@ ClassMethod GetRawBeans(id As %String, quantity As %Numeric) As %Status
         }
         else 
         {
+            // do we have enough quantity?
             set item = ##class(ICO.inventory).%OpenId(id)
             if (quantity > item.quantitykg)
             {
@@ -141,6 +169,7 @@ ClassMethod GetRawBeans(id As %String, quantity As %Numeric) As %Status
             }
             else 
             {
+                // decrement the quantity and return the requested inventory
                 set item.quantitykg = (item.quantitykg - quantity)
                 set sc = item.%Save()
                 do item.%JSONExportToString(.outstring)
@@ -155,6 +184,9 @@ ClassMethod GetRawBeans(id As %String, quantity As %Numeric) As %Status
     Quit $$$OK
 }
 
+/// Return raw coffee bean inventory
+/// Input: None
+/// Output: on success, JSON listing all products on hand, or an error.
 ClassMethod ListRawBeans() As %Status
 {
     try {

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Creates JSON files representing bags of roasted coffee coming out of the roastery and ready for import into the sales database, ICO.catalog, using loadproducts.sh
+
 freshdate=$(date +"%Y-%m-%d")
 staledate=$(date -d "-6 days" +"%Y-%m-%d")
 

@@ -1,19 +1,19 @@
-/// 
+/// Database representation of bagged and roasted coffee
 Class ICO.catalog Extends (%Persistent, %JSON.Adaptor) [ ClassType = persistent, DdlAllowed, Final, Owner = {_SYSTEM}, ProcedureBlock, SqlRowIdPrivate, SqlTableName = catalog ]
 {
-
+/// Unique ID
 Property catalogid As %Library.BigInt(%JSONFIELDNAME = "catalog_id", MINVAL = 1) [ Identity, SqlColumnNumber = 2, SqlFieldName = catalog_id ];
-
+/// Product Code
 Property productcode As %Library.String(%JSONFIELDNAME = "product_code", MAXLEN = 128) [ SqlColumnNumber = 3, SqlFieldName = product_code ];
-
+/// Quantity in number of bags
 Property quantity As %Library.Integer(MAXVAL = 2147483647, MINVAL = -2147483648) [ SqlColumnNumber = 4 ];
-
+/// Price per bag in USD
 Property price As %Library.Numeric(MAXVAL = 99999999.99, MINVAL = -99999999.99, SCALE = 2) [ SqlColumnNumber = 5 ];
-
+/// Time at which the coffee beans were roasted
 Property timeroasted As %Library.DateTime(%JSONFIELDNAME = "time_roasted") [ SqlColumnNumber = 6, SqlFieldName = time_roasted ];
-
+/// Flowery prose describing the taste of the coffee
 Property roastingnotes As %Library.String(%JSONFIELDNAME = "roasting_notes", MAXLEN = 2048) [ SqlColumnNumber = 7, SqlFieldName = roasting_notes ];
-
+/// A product picture
 Property img As %Library.String(MAXLEN = 2048) [ SqlColumnNumber = 8 ];
 
 Parameter USEEXTENTSET = 1;

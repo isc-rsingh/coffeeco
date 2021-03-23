@@ -5,12 +5,12 @@ from datetime import date
 KEYFIELDNAMES = ["vendor_id", "vendor_product_code", "quantity_kg"]
 
 def load_manifest(json_data: dict, conn: pyodbc.Connection) -> Exception:
-    """ Use SQL to load records into the data structure
+    """ Use SQL INSERT statements to load records into existing relational tables
     Args:
         json_data: manifest in a Python dictionary
         conn: database connection object
     Returns:
-        true if creation is successful, otherwise returns the exception
+        None if creation is successful, otherwise returns the exception
     """
     cursor = conn.cursor()
     fieldnamesql = "INSERT INTO ICO.inventory (vendor_id, vendor_product_code, quantity_kg, date_arrival)"
@@ -35,6 +35,12 @@ def load_manifest(json_data: dict, conn: pyodbc.Connection) -> Exception:
 
 
 def validate_manifest(json_data: dict) -> tuple:
+    """ Verify that the manifest file contains valid inventory data
+    Args:
+        json_data: manifest in a Python dictionary
+    Returns:
+        a tuple (original JSON data, True, None) if valid, (None, false, exception) if not
+    """
     try:
         # check if items exists
         if (json_data.get("items")) is None:
@@ -79,6 +85,12 @@ def get_connection_info(file_name):
     return connections
 
 def main():
+    """ Entry point to running the program. Loads a file in the same directory named order_manifest.json, parses the file into SQL INSERT statements, and loads the inventory into the database
+    Args:
+        None
+    Returns:
+        Nothing
+    """
     with open('./order_manifest.json') as f:
         data = json.load(f)
     
