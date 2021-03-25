@@ -1,7 +1,10 @@
 <template>
   <div class="about">
     <h2>Full Stack Tutorial for the InterSystems IRIS Data Platform</h2>
-    <p>In this tutorial, you create the basic information management infrastructure for a small manufacturing company. In this case, the company roasts, packages and sells delicious, freshly roasted coffee beans. Along the way, you learn how the InterSystems IRIS data platform can serve as the backbone of your IT architecture.</p>
+    <p>In this tutorial, you create the basic information management infrastructure
+ for a small manufacturing company. In this case, the company roasts,
+ packages and sells delicious, freshly roasted coffee beans. Along the way, you learn how
+ the InterSystems IRIS data platform can serve as the backbone of your IT architecture.</p>
 
     <p>It’s divided into three parts:
     <ol>

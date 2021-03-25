@@ -41,4 +41,8 @@ h1 {
 .warning {
   text-align: center;
 }
+
+.about {
+  max-width: 800px;
+}
 </style>
