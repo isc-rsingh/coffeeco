@@ -1,10 +1,13 @@
 /// REST services for managing the coffee business
 Class ICO.Handler Extends %CSP.REST
 {
+
 /// Honor the CORS header <a href="https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GREST_CORS">as described here</a>
 Parameter HandleCorsRequest = 1;
+
 /// Default response content type
 Parameter CONTENTTYPE = "application/json";
+
 /// Number of days since roasting for the coffee to be considered "stale"
 Parameter MAXAGE = 5;
 
@@ -37,7 +40,7 @@ ClassMethod SellProduct(id As %String, quantity As %Numeric) As %Status
                 set item.quantity = (item.quantity - quantity)
                 do item.%JSONExportToString(.outstring)
                 write outstring
-                set sc = item.%Save()
+                do item.%Save()
             }
         }
     } catch (oException) {
@@ -131,7 +134,7 @@ ClassMethod CatalogProduct() As %Status
         set catobj.timeroasted = obj."time_roasted"
         set catobj.roastingnotes = obj."roasting_notes"
         set catobj.img = obj."img"
-        set sc = catobj.%Save()
+        do catobj.%Save()
         set resp = {}
         set resp."success" = 1
         write resp.%ToJSON()
@@ -171,7 +174,7 @@ ClassMethod GetRawBeans(id As %String, quantity As %Numeric) As %Status
             {
                 // decrement the quantity and return the requested inventory
                 set item.quantitykg = (item.quantitykg - quantity)
-                set sc = item.%Save()
+                do item.%Save()
                 do item.%JSONExportToString(.outstring)
                 write outstring
             }

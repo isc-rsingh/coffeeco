@@ -1,6 +1,6 @@
 <template>
   <li class="product-card">
-    <img :src="'/' + product.img">
+    <img :src="'/' + product.img" alt="product image">
     <div class="product-details">
       <div class="title">{{product.product_code}}</div>
       <div class="notes">{{product.roasting_notes}}</div>
