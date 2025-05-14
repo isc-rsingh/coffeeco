@@ -1,6 +1,6 @@
 # InterSystems IRIS Full Stack QuickStart
 
-This QuickStart is designed to run in the InterSystems Sandbox environment, so [follow the exercise online here](https://gettingstarted.intersystems.com/full-stack/).
+This QuickStart is designed to run in the InterSystems Sandbox environment, so [follow the exercise online here](https://play.instruqt.com/embed/intersystems/tracks/iris-for-health?token=em_IEo0iBDc0fgagpas).
 
 In it, you create the basic information management infrastructure for a small manufacturing company. In this case, the company will be roasting, packaging and selling delicious, freshly roasted coffee beans. Along the way, you’ll learn how the InterSystems IRIS data platform can serve as the backbone of your IT architecture.
 
