@@ -10,6 +10,4 @@ The QuickStart is divided into three parts and introduces the processes that you
 - **Part 2:** Build a RESTful API to handle business functions using ObjectScript.
 - **Part 3:** Build an online storefront to sell your artisan coffee beans using the popular JavaScript framework, Vue.js.
 
-![the 3 steps of the QuickStart](https://gettingstarted.intersystems.com/wp-content/uploads/2021/03/IrisCoffee-Sketch1-01.png)
-
 Use this repo by following [the instructions here](https://gettingstarted.intersystems.com/full-stack/).
