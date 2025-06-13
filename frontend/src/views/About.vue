@@ -14,6 +14,6 @@
     </ol>
     </p>
 
-    <p><a href="https://github.com/intersystems/coffeeco" target="_new">Here is the GitHub repository with all the code</a></p>
+    <p><a href="https://github.com/isc-rsingh/coffeeco" target="_new">Here is the GitHub repository with all the code</a></p>
   </div>
 </template>

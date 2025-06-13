@@ -1,16 +1,21 @@
+<script setup lang="ts">
+import { RouterLink, RouterView } from 'vue-router'
+import HelloWorld from './components/HelloWorld.vue'
+</script>
 <template>
-  <div id="app">
+  <div id="app-old">
     <h1>IRIS Coffee Company</h1>
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/sale">Last chance</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+    <strong>Current route path:</strong> {{ $route.fullPath }}
+    <nav>
+      <RouterLink to="/">Home</RouterLink> |
+      <RouterLink to="/sale">Last chance</RouterLink> |
+      <RouterLink to="/about">About</RouterLink>
+    </nav>
+      <RouterView/>
   </div>
 </template>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
