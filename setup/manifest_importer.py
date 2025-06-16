@@ -1,10 +1,10 @@
 import json
-import pyodbc
+import iris
 from datetime import date
 
 KEYFIELDNAMES = ["vendor_id", "vendor_product_code", "quantity_kg"]
 
-def load_manifest(json_data: dict, conn: pyodbc.Connection) -> Exception:
+def load_manifest(json_data: dict, conn: iris.IRISConnection) -> Exception:
     """ Use SQL INSERT statements to load records into existing relational tables
     Args:
         json_data: manifest in a Python dictionary
@@ -18,7 +18,7 @@ def load_manifest(json_data: dict, conn: pyodbc.Connection) -> Exception:
     mydate = today.strftime("%Y-%m-%d")
     try:
         items = json_data.get("items")
-        for item in items:
+        for item in items: # type: ignore
             valsql = fieldnamesql + " VALUES ("
             valsql += "'" + item.get("vendor_id") + "', "
             valsql += "'" + item.get("vendor_product_code") + "', "
@@ -99,21 +99,20 @@ def main():
     if status:
         # Retrieve connection information from configuration file
         connection_detail = get_connection_info("connection.config")
-        ip = connection_detail["ip"]
-        port = int(connection_detail["port"])
-        namespace = connection_detail["namespace"]
-        username = connection_detail["username"]
-        password = connection_detail["password"]
         driver = "{InterSystems ODBC}"
+        args = {
+            'hostname': connection_detail["ip"] or "127.0.0.1", 
+            'port': int(connection_detail["port"]), 
+            'namespace': connection_detail["namespace"], 
+            'username': connection_detail["username"], 
+            'password': connection_detail["password"]
+        }
 
         # Create connection to InterSystems IRIS
-        connection_string = 'DRIVER={};SERVER={};PORT={};DATABASE={};UID={};PWD={}' \
-            .format(driver, ip, port, namespace, username, password)
-
-        connection = pyodbc.connect(connection_string)
+        conn = iris.connect(**args)
         print("Connected to InterSystems IRIS")
 
-        msg = load_manifest(data, connection)
+        msg = load_manifest(data, conn)
         if msg:
             print(msg)
     else:
