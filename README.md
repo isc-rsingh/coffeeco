@@ -21,16 +21,27 @@ Let's use the SQL client built into the InterSystems IRIS Terminal to create tho
 
 ## Part 2: Build a RESTful API to handle business functions using ObjectScript.
 
-1. `curl -X POST http://localhost:52773/api/coffeeco/inventory/getbeans/1/2.4 | jq`
+1. Create a connection to your IRIS server, setting your code directory to services/cls
+2. Move ObjectScript classes from cls_samples to cls/ICO and compile them
+1. Roast some beans (virtually): `curl -X POST http://localhost:52773/api/coffeeco/inventory/getbeans/1/2.4 | jq`
 
-Let’s do that now. In the services/samples directory, you’ll find 2 scripts:
+Let’s put some roasted coffee into our sales catalog. In the services/samples directory, you’ll find 2 scripts:
 
-`createproducts.sh`: Creates 5 sample coffee products ready for sale.The first 3 were roasted today, and the last 2 were roasted 6 days ago. This gives us some relatively stale inventory to discount in the store.
-
-`loadproducts.sh`: Runs a curl command that iterates through every JSON file in the directory and uses the web service you just wrote to load the data into ICO.catalog.
+- `createproducts.sh`: Creates 5 sample coffee products ready for sale.The first 3 were roasted today, and the last 2 were roasted 6 days ago. This gives us some relatively stale inventory to discount in the store.
+- `loadproducts.sh`: Runs a curl command that iterates through every JSON file in the directory and uses the web service you just wrote to load the data into ICO.catalog.
 
 1. cd ./services/samples
 2. sh createproducts.sh
 3. sh loadproducts.sh
 
 ## Part 3: Build an online storefront to sell your artisan coffee beans using the popular JavaScript framework, Vue.js.
+
+Query for fresh products:
+`curl http://localhost:52773/api/coffeeco/catalog/getproducts | jq`
+
+Query for stale:
+`curl http://localhost:52773/api/coffeeco/catalog/getproducts/0 | jq`
+
+Try selling products:
+`curl -X POST http://localhost:52773/api/coffeeco/catalog/sellproduct/1/2 | jq`
+
