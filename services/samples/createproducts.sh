@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Creates JSON files representing bags of roasted coffee coming out of the roastery and ready for import into the sales database, ICO.catalog, using loadproducts.sh
-
+# for this to work on macOS: brew install coreutils and then create an alias: echo "alias date=gdate" >> ~/.bash_profile
 freshdate=$(date +"%Y-%m-%d")
 staledate=$(date -d "-6 days" +"%Y-%m-%d")
 
