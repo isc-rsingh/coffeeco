@@ -6,24 +6,41 @@ In it, you create the basic information management infrastructure for a small ma
 
 The QuickStart is divided into three parts and introduces the processes that you, as a coffee manufacturer, follow to set up everything from inventorying raw coffee beans to selling them in an online portal.
 
-## Part 1: Write SQL to create and populate databases.
+## Part 1: Create and Populate Databases with SQL
 
-IRIS Coffee Company has three major divisions in the company:
-the warehouse stores the raw coffee bean inventory. Its data will be in the table ICO.inventory
-the roastery roasts the beans, and doesn’t need to store data
-the storefront, where the company sells the roasted coffee. Its data will be in the table ICO.catalog
-Let's use the SQL client built into the InterSystems IRIS Terminal to create those two tables using SQL CREATE statements.
+In this part, you will set up the databases needed for the IRIS Coffee Company, which has three main divisions:
 
-1. Run SQL in `./setup/create_dbs.sql`
-2. Update `./setup/connection.config`
-3. `pip install intersystems-irispython`
-4. Run Python script `./setup/manifestimporter.py`
+- **Warehouse:** Stores raw coffee bean inventory in the `ICO.inventory` table.
+- **Roastery:** Handles roasting but does not store data.
+- **Storefront:** Sells roasted coffee, with data stored in the `ICO.catalog` table.
 
+Follow these steps to create and populate the databases:
+
+1. Open the SQL client in the InterSystems IRIS Terminal:
+   - Confirm the namespace is set to `IRISAPP`. If not, run:
+     ```properties
+     znspace "IRISAPP"
+     ```
+   - Launch the SQL shell by entering:
+     ```properties
+     DO $SYSTEM.SQL.Shell()
+     ```
+
+2. Execute the SQL statements found in `./setup/create_dbs.sql` one at a time. This will create the `ICO.inventory` and `ICO.catalog` tables.
+
+3. Update the `./setup/connection.config` file to point to your IRIS server.
+
+4. Install the required Python package and run the data import script:
+   ```sh
+   pip install intersystems-irispython
+   cd setup
+   python manifestimporter.py
+   ```
 ## Part 2: Build a RESTful API to handle business functions using ObjectScript.
 
 1. Create a connection to your IRIS server, setting your code directory to services/cls
 2. Move ObjectScript classes from cls_samples to cls/ICO and compile them
-1. Roast some beans (virtually): `curl -X POST http://localhost:52773/api/coffeeco/inventory/getbeans/1/2.4 | jq`
+3. Roast some beans (virtually): `curl -X POST http://localhost:52773/api/coffeeco/inventory/getbeans/1/2.4 | jq`
 
 Let’s put some roasted coffee into our sales catalog. In the services/samples directory, you’ll find 2 scripts:
 
