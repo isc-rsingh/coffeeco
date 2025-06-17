@@ -43,7 +43,7 @@ export default {
       const ci = this.product.catalog_id;
       const oq = this.orderquantity;
       // console.log({ catalog_id: this.catalog_id, quant: this.orderquantity, price: this.price });
-      const orderurl = `http://localhost:52773/api/coffeeco/catalog/sellproduct/${ci}/${oq}`;
+      const orderurl = `api/coffeeco/catalog/sellproduct/${ci}/${oq}`;
       axios
         .post(orderurl)
         .then(
