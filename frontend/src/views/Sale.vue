@@ -49,7 +49,7 @@ export default {
     fetchProducts() {
       return axios({
         method: 'get',
-        url: 'http://localhost:52773/api/coffeeco/catalog/getproducts/2',
+        url: 'api/coffeeco/catalog/getproducts/2',
         params: {
           format: 'json',
         },
