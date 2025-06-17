@@ -6,7 +6,7 @@
  packages and sells delicious, freshly roasted coffee beans. Along the way, you learn how
  the InterSystems IRIS data platform can serve as the backbone of your IT architecture.</p>
 
-    <p>It’s divided into three parts:
+    <p>It&apos;s divided into three parts:
     <ol>
       <li><a href="https://gettingstarted.intersystems.com/full-stack/full-stack-part-one/" target="_new">part 1</a>: create database tables and write raw coffee bean deliveries to the database.</li>
       <li><a href="https://gettingstarted.intersystems.com/full-stack/part-two-rest-services/" target="_new">part 2</a>: build web services that power the roasting operations and online store.</li>
