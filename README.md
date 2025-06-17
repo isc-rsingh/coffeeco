@@ -36,20 +36,46 @@ Follow these steps to create and populate the databases:
    cd setup
    python manifestimporter.py
    ```
-## Part 2: Build a RESTful API to handle business functions using ObjectScript.
+## Part 2: Build a RESTful API to handle business functions using ObjectScript
 
-1. Create a connection to your IRIS server, setting your code directory to services/cls
-2. Move ObjectScript classes from cls_samples to cls/ICO and compile them
-3. Roast some beans (virtually): `curl -X POST http://localhost:52773/api/coffeeco/inventory/getbeans/1/2.4 | jq`
+1. Connect to your IRIS server and set your code directory to `services/cls`.
 
-Let’s put some roasted coffee into our sales catalog. In the services/samples directory, you’ll find 2 scripts:
+2. Move the ObjectScript classes from the `cls_Sample` directory to `cls/ICO` and compile them to make them available in your namespace.
+
+3. Open the InterSystems Management Portal and navigate to:
+   `Administration` -> `Security` -> `Applications` -> `Web Applications`.
+
+4. Create a new web application with the following settings:
+   - **Name:** `/api/coffeeco`
+   - **Namespace:** `IRISAPP`
+   - **Dispatch Class:** `ICO.Handler`
+
+5. Switch to the "Application Roles" tab next to "General". For demonstration purposes, select the `%All` role and click **Assign** to grant access.
+
+6. Roast some beans (virtually):
+   ```sh
+   curl -X POST http://localhost:52773/api/coffeeco/inventory/getbeans/1/2.4 | jq
+   ```
+   You should see a JSON response confirming the operation. Additionally, verify that the `ICO.inventory` table has been updated: the row with `vendor_id` of `ETRADER` should now show `197.6` in the `quantity_kg` field.
+
+Next, add roasted coffee products to the sales catalog. In the `services/samples` directory, you will find two scripts:
 
 - `createproducts.sh`: Creates 5 sample coffee products ready for sale.The first 3 were roasted today, and the last 2 were roasted 6 days ago. This gives us some relatively stale inventory to discount in the store.
 - `loadproducts.sh`: Runs a curl command that iterates through every JSON file in the directory and uses the web service you just wrote to load the data into ICO.catalog.
 
-1. cd ./services/samples
-2. sh createproducts.sh
-3. sh loadproducts.sh
+To run these scripts, execute the following commands in your terminal:
+```sh
+cd ./services/samples
+sh createproducts.sh
+sh loadproducts.sh
+```
+
+If you are using Windows PowerShell with Git Bash installed, run these commands instead:
+```powershell
+cd ./services/samples
+./createproducts.sh
+./loadproducts.sh
+```
 
 ## Part 3: Build an online storefront to sell your artisan coffee beans using the popular JavaScript framework, Vue.js.
 
