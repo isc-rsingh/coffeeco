@@ -1,10 +1,10 @@
 /* eslint-disable no-param-reassign */
 <template>
   <div class="home">
-    <p v-if="loading">
-      Loading...
-    </p>
-    <h2 class="warning" v-if="products.length == 0">
+    <ul v-if="loading">
+      <product-card-skeleton v-for="n in 3" :key="n" />
+    </ul>
+    <h2 class="warning" v-else-if="products.length === 0">
       No sale products right now.
     </h2>
     <ul v-else>

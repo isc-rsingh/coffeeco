@@ -1,9 +1,9 @@
 <template>
   <div class="home">
-    <p v-if="loading">
-      Loading...
-    </p>
-    <h2 class="warning" v-if="products.length == 0">
+    <ul v-if="loading">
+      <product-card-skeleton v-for="n in 3" :key="n" />
+    </ul>
+    <h2 class="warning" v-else-if="products.length === 0">
       No fresh products right now.
     </h2>
     <ul v-else>
@@ -18,11 +18,13 @@
 <script>
 import axios from 'axios';
 import ProductCard from '@/components/ProductCard.vue';
+import ProductCardSkeleton from '@/components/ProductCardSkeleton.vue';
 
 export default {
   name: 'Home',
   components: {
     ProductCard,
+    ProductCardSkeleton,
   },
   data() {
     return {
@@ -51,3 +53,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.warning{
+  text-align: center;
+}
+</style>
