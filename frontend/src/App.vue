@@ -29,7 +29,7 @@ html, body, #app {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: var(--vt-c-text-light-1);
+  color: var(--volor-text);
   background: var(--color-background);
   display: flex;
   flex-direction: column;
@@ -91,7 +91,7 @@ main {
   flex-grow: 1;
   padding: 24px 40px;
   font-size: 1.1rem;
-  color: var(--vt-c-text-light-2);
+  color: var(--volor-text);
   overflow-y: auto;
 }
 
