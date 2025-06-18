@@ -4,7 +4,7 @@
     <div class="product-details">
       <div class="title">{{product.product_code}}</div>
       <div class="notes">{{product.roasting_notes}}</div>
-      <div class="roasted">Roasted on: {{product.time_roasted | moment}}</div>
+      <div class="roasted">Roasted on: {{ formatDate(product.time_roasted) }}</div>
       <div class="price-order">
         <div class="order">
           <form @submit.prevent="processOrder">
@@ -32,11 +32,6 @@ export default {
       catalog_id: this.product.catalog_id,
     };
   },
-  filters: {
-    moment(date) {
-      return moment(date).format('MMMM Do');
-    },
-  },
   methods: {
     processOrder() {
       const nm = this.product.product_code;
@@ -55,6 +50,15 @@ export default {
             }
           },
         );
+    },
+    formatDate(date) {
+      const m = moment(date);
+      if (!m.isValid()) {
+        console.warn('Invalid date passed to formatDate:', date);
+        // placeholder
+        return 'Freshly roasted';
+      }
+      return m.format('MMMM Do');
     },
   },
 };
