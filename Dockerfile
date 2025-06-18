@@ -1,6 +1,5 @@
 ARG IMAGE=containers.intersystems.com/intersystems/iris-community:latest-preview
-ARG IMAGE=containers.intersystems.com/intersystems/iris-community-arm64:2025.1
-#ARG IMAGE=containers.intersystems.com/intersystems/iris-ml-arm64:2024.1
+ARG IMAGE=containers.intersystems.com/intersystems/iris-community:2025.1
 FROM $IMAGE 
 
 WORKDIR /irisdev/app
@@ -15,9 +14,9 @@ USER root
 # Update package and install sudo
 RUN apt-get update && apt-get install -y \
 	tar \
-# 	git \
+	# 	git \
 	nano \ 
-# 	npm \ 
+	# 	npm \ 
 	curl \
 	sudo && \
 	/bin/echo -e ${ISC_PACKAGE_MGRUSER}\\tALL=\(ALL\)\\tNOPASSWD: ALL >> /etc/sudoers && \
