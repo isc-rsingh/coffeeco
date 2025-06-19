@@ -4,7 +4,7 @@
     <div class="product-details">
       <div class="title">{{product.product_code}}</div>
       <div class="notes">{{product.roasting_notes}}</div>
-      <div class="roasted">Roasted on: {{product.time_roasted | moment}}</div>
+      <div class="roasted">Roasted on: {{ formatDate(product.time_roasted) }}</div>
       <div class="price-order">
         <div class="order">
           <form @submit.prevent="processOrder">
@@ -32,18 +32,12 @@ export default {
       catalog_id: this.product.catalog_id,
     };
   },
-  filters: {
-    moment(date) {
-      return moment(date).format('MMMM Do');
-    },
-  },
   methods: {
     processOrder() {
       const nm = this.product.product_code;
       const ci = this.product.catalog_id;
       const oq = this.orderquantity;
-      // console.log({ catalog_id: this.catalog_id, quant: this.orderquantity, price: this.price });
-      const orderurl = `http://localhost:52773/api/coffeeco/catalog/sellproduct/${ci}/${oq}`;
+      const orderurl = `api/coffeeco/catalog/sellproduct/${ci}/${oq}`;
       axios
         .post(orderurl)
         .then(
@@ -55,6 +49,15 @@ export default {
             }
           },
         );
+    },
+    formatDate(date) {
+      const m = moment(date);
+      if (!m.isValid()) {
+        console.warn('Invalid date passed to formatDate:', date);
+        // placeholder
+        return 'Freshly roasted';
+      }
+      return m.format('MMMM Do');
     },
   },
 };

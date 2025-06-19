@@ -1,6 +1,7 @@
 connection.config
 services/cls/
 .DS_Store
+services/samples/*.json
 
 # Logs
 logs
